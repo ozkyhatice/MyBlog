@@ -1,6 +1,12 @@
 import prisma from "../../../plugins/db.js";
 import bycrypt from "bcrypt"
 
+export async function isValidId(id) {
+    return prisma.user.findUnique({
+        where: { id }
+    }) !== null;
+}
+
 export async function isUniqueUser(email, username) {
     const user = await prisma.user.findUnique({
         where: { email }
