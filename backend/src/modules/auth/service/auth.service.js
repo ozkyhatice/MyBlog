@@ -14,7 +14,7 @@ export async function isUniqueUser(email, username) {
     return true;
 }
 
-export default async function registerService(username, email, password) {
+export async function registerService(username, email, password) {
     const hashedPassword = await bycrypt.hash(password, 10);
     return prisma.user.create({
         data: {
@@ -25,3 +25,12 @@ export default async function registerService(username, email, password) {
     });
 }
 
+export async function loginService(email, password) {
+    const user = await prisma.user.findUnique({
+        where: { email }
+    });
+    if (user && await bycrypt.compare(password, user.password)) {
+        return user;
+    }
+    return null;
+}

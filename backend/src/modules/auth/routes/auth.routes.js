@@ -1,5 +1,5 @@
 import { registerSchema, loginSchema } from "../schema/auth.schema.js";
-import { registerController } from "../controller/auth.controller.js";
+import { registerController, loginController } from "../controller/auth.controller.js";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 const registerBodySchema = zodToJsonSchema(registerSchema);
@@ -11,9 +11,14 @@ export default async function authRoutes(fastify) {
             schema: {
                 body: registerBodySchema
             }
-        },
-        registerController
+        }, registerController
     );
 
-    
+    //LOGIN
+    fastify.post('/login', {
+        schema: {
+            body: zodToJsonSchema(loginSchema)
+        }
+    }, loginController
+    );
 };
